@@ -1,0 +1,10 @@
+
+include Dragon_Hunt_Linux
+include Map_Editor
+include README.txt
+include settings.txt
+recursive-include code *
+recursive-include modules *
+recursive-include docs *
+prune modules/*/saves
+exclude modules/*/data/game_plan.jpg

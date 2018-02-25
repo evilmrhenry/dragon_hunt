@@ -1,0 +1,214 @@
+S'dh3.3'
+p0
+.S'Alfredo'
+p0
+.I77
+.I28
+.I62
+.I18
+.I20
+.I17
+.S'232'
+p0
+.I1832
+.I13
+.I0
+.I6
+.S'Flame Sword'
+p0
+.S'Dragon Breastplate'
+p0
+.S'Tower Shield'
+p0
+.S'Dragon Helm'
+p0
+.S'Plate Gauntlets'
+p0
+.S'Chainmail Leggings'
+p0
+.I28
+.S'Light healing potion'
+p0
+.S'Raft'
+p0
+.S'Violet Gem'
+p0
+.S'Green Gem'
+p0
+.S'Pink Gem'
+p0
+.S'Smoke bomb'
+p0
+.S'Healing potion'
+p0
+.S'Light healing potion'
+p0
+.S'Light healing potion'
+p0
+.S'Healing potion'
+p0
+.S'Super healing potion'
+p0
+.S'Poison bomb'
+p0
+.S'Healing potion'
+p0
+.S'Super healing potion'
+p0
+.S'Reinforced Helmet'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.S'Ignore'
+p0
+.I2
+.I8
+.I29
+.I5
+.S'Rage'
+p0
+.S'Sneak Away'
+p0
+.S'Dismember'
+p0
+.S'Frenzy'
+p0
+.S'Cringe'
+p0
+.(lp0
+.I29
+.(dp0
+S'healing_potion_farmhouse1'
+p1
+S'1'
+p2
+sS'pink_gem_found0'
+p3
+g2
+sS'smoke_bomb_found0'
+p4
+g2
+sS'have_attacked_bear'
+p5
+g2
+sS'gold_found_farm'
+p6
+g2
+sS'light_healing_potion_level1.txt_0'
+p7
+g2
+sS'gold_level1.txt_0'
+p8
+g2
+sS'been_to_first_level'
+p9
+g2
+sS'violet_gems_found0'
+p10
+g2
+sS'get_elixir'
+p11
+g2
+sS'super_healing_potion_found0'
+p12
+g2
+sS'super_healing_potion_found1'
+p13
+g2
+sS'chain_boots_found0'
+p14
+g2
+sS'have_attacked_house'
+p15
+g2
+sS'healing_potion_found0'
+p16
+g2
+sS'gold_found6'
+p17
+g2
+sS'gold_found7'
+p18
+g2
+sS'farmhouse_key_found'
+p19
+g2
+sS'gold_found5'
+p20
+g2
+sS'treasure_found'
+p21
+g2
+sS'gold_found0'
+p22
+g2
+sS'gold_found1'
+p23
+g2
+sS'light_healing_potion_found1'
+p24
+g2
+sS'light_healing_potion_found0'
+p25
+g2
+sS'gold_found8'
+p26
+g2
+sS'healing_potion_3'
+p27
+g2
+sS'poison_bomb_found0'
+p28
+g2
+sS'raft_level2.txt_0'
+p29
+g2
+sS'blue_crystal_found0'
+p30
+g2
+sS'been_to_fourth_level'
+p31
+S'1'
+p32
+sS'town_enter_from'
+p33
+S'0'
+p34
+sS'green_gem_found0'
+p35
+g2
+sS'long_sword_level2.txt_0'
+p36
+g2
+sS'leather_armor_found0'
+p37
+g2
+sS'been_to_third_level'
+p38
+g32
+sS'gold_3'
+p39
+g2
+s.
