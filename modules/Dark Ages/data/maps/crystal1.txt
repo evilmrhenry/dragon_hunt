@@ -29,8 +29,8 @@ aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa
 
 :def
 :aa
-pix("underground/rock.png")
-walk(0)
+pix("underground/rock.png")
+walk(0)
 :ab
 pix("underground/rock.png")
 walk(0)
@@ -53,8 +53,8 @@ hero("hero_s")
 pix("underground/rock_e.png")
 walk(0)
 :ag
-pix("underground/dirt.png")
-walk(1)
+pix("underground/dirt.png")
+walk(1)
 :ah
 pix("underground/dirt_ew.png")
 walk(1)
@@ -89,8 +89,8 @@ walk(0)
 pix("underground/dirt_ns.png")
 walk(1)
 :aq
-pix("underground/stair_down.png")
-walk(1)
+pix("underground/stair_down.png")
+walk(1)
 Action
 move("world3x4.txt", 14, 5)
 hero("hero_w")
@@ -122,8 +122,8 @@ hero("hero_s")
 pix("underground/rock_se.png")
 walk(0)
 :ax
-pix("underground/stair_down.png")
-walk(1)
+pix("underground/stair_down.png")
+walk(1)
 Action
 move("crystal1.txt", 17, 5)
 hero("hero_s")
@@ -146,8 +146,8 @@ Action
 move("crystal1.txt", 6, 9)
 hero("hero_s")
 :aB
-pix("underground/stair_up.png")
-walk(1)
+pix("underground/stair_up.png")
+walk(1)
 Action
 move("crystal1.txt", 22, 10)
 hero("hero_s")
@@ -173,8 +173,8 @@ hero("hero_s")
 pix("underground/rock_sw.png")
 walk(0)
 :aG
-pix("underground/stair_up.png")
-walk(1)
+pix("underground/stair_up.png")
+walk(1)
 Action
 move("crystal1.txt", 17, 12)
 hero("hero_s")
@@ -185,8 +185,8 @@ Action
 move("crystal1.txt", 24, 15)
 hero("hero_s")
 :aI
-pix("underground/stair_down.png")
-walk(1)
+pix("underground/stair_down.png")
+walk(1)
 Action
 move("crystal1.txt", 18, 17)
 hero("hero_s")
@@ -194,14 +194,14 @@ hero("hero_s")
 pix("underground/rock_ns.png")
 walk(0)
 :aK
-pix("underground/stair_down.png")
-walk(1)
+pix("underground/stair_down.png")
+walk(1)
 Action
 move("crystal1.txt", 20, 18)
 hero("hero_s")
 :aL
-pix("underground/stair_down.png")
-walk(1)
+pix("underground/stair_down.png")
+walk(1)
 Action
 move("crystal1.txt", 21, 12)
 hero("hero_s")
@@ -212,8 +212,8 @@ Action
 move("crystal1.txt", 26, 13)
 hero("hero_s")
 :aN
-pix("underground/stair_up.png")
-walk(1)
+pix("underground/stair_up.png")
+walk(1)
 Action
 move("crystal1.txt", 11, 14)
 hero("hero_s")
@@ -224,20 +224,20 @@ Action
 move("crystal1.txt", 12, 19)
 hero("hero_s")
 :aP
-pix("underground/stair_up.png")
-walk(1)
+pix("underground/stair_up.png")
+walk(1)
 Action
 move("crystal1.txt", 20, 15)
 hero("hero_s")
 :aQ
-pix("underground/stair_up.png")
-walk(1)
+pix("underground/stair_up.png")
+walk(1)
 Action
 move("crystal1.txt", 23, 23)
 hero("hero_s")
 :aR
-pix("underground/stair_down.png")
-walk(1)
+pix("underground/stair_down.png")
+walk(1)
 Action
 move("crystal1.txt", 21, 22)
 hero("hero_s")
@@ -248,8 +248,8 @@ Action
 move("crystal1.txt", 8, 12)
 hero("hero_s")
 :aT
-pix("underground/stair_up.png")
-walk(1)
+pix("underground/stair_up.png")
+walk(1)
 Action
 move("crystal1.txt", 14, 18)
 hero("hero_s")
@@ -260,8 +260,8 @@ Action
 move("crystal1.txt", 14, 21)
 hero("hero_s")
 :aV
-pix("underground/stair_up.png")
-walk(1)
+pix("underground/stair_up.png")
+walk(1)
 Action
 move("crystal1.txt", 10, 22)
 hero("hero_s")
@@ -278,8 +278,8 @@ Action
 move("crystal1.txt", 19, 20)
 hero("hero_s")
 :aY
-pix("underground/stair_up.png")
-walk(1)
+pix("underground/stair_up.png")
+walk(1)
 Action
 move("crystal1.txt", 25, 18)
 hero("hero_s")
@@ -290,8 +290,8 @@ Action
 move("crystal2.txt", 8, 6)
 hero("hero_s")
 :a0
-pix("underground/stair_down.png")
-walk(1)
+pix("underground/stair_down.png")
+walk(1)
 Action
 move("crystal1.txt", 23, 18)
 hero("hero_s")

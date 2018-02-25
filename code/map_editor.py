@@ -1160,7 +1160,7 @@ def map_menu():
 
 def sel_mod(selected_mod):
 #	window_sel_game.withdraw()
-	g.mod_directory = "../modules/" + selected_mod
+	g.mod_directory = os.path.join(g.base_location, "modules", selected_mod)
 	# put all items in a list
 	global item_dir
 	item_dir = os.listdir(g.mod_directory + "/images/tiles/items")

@@ -85,7 +85,7 @@ buytype=gold
 power=-1
 description=Heals most injuries (+30 HP).
 if(skill("has", "Burn"), "=", 0)
-	info("You are not strong enough. Learn Burn first.")
+	info("You are not strong enough. Learn Heal first.")
 	end()
 endif
 if(skill("give", "Great Heal"), "=", 0)
