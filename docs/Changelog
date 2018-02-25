@@ -22,6 +22,8 @@ Changelog:
 Fixed a bad bug in the overworld map. The far south and east will now display
 properly. (Elena of Valhalla for report.)
 Corrected a spell buying message. (Elena of Valhalla for report.)
+Image directories will now ignore non-image files. (Γιώργος Κωστόπουλος for report.)
+Moved from cvs to git.
 
 3.56
 Improved speed when loading linked maps.

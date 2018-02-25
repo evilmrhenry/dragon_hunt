@@ -35,6 +35,7 @@ import pickle
 from os import path, mkdir, remove, walk
 
 #needed for scripting
+import sys
 from scripting import *
 
 #player info
@@ -130,6 +131,8 @@ break_one_loop = 0
 
 #used to decide whether or not to refresh (flip) the screen.
 unclean_screen = False
+screen = None
+screen_size = None
 
 global clock
 clock = pygame.time.Clock()
@@ -137,6 +140,7 @@ clock = pygame.time.Clock()
 base_location = os.path.dirname(__file__)
 if base_location.endswith("code"):
     base_location = os.path.dirname(base_location)
+
 
 #save the game in saves/input.
 #uses pickle, first line is a version number.
@@ -230,7 +234,7 @@ def loadgame(save_file):
     ygrid = pickle.load(savefile)
     global zgrid
     zgrid = pickle.load(savefile)
-    if str(zgrid).isdigit() != True:
+    if not str(zgrid).isdigit():
         zgrid = mapname2zgrid(str(zgrid))
     skill_len = pickle.load(savefile)
     for i in range(skill_len):
@@ -383,6 +387,7 @@ joy_axis0 = 0
 global joy_axis1
 joy_axis1 = 1
 
+
 #get the key bindings from settings.txt
 def read_settings():
     global bindings
@@ -403,14 +408,14 @@ def read_settings():
     #try to open settings.txt. If it doesn't exist,
     # just use the default settings.
     try:
-        file = open(os.path.join(base_location, "settings.txt"), 'r')
+        file_object = open(os.path.join(base_location, "settings.txt"), 'r')
     except IOError:
         return 0
-    line = file.readline()
+    line = file_object.readline()
     while line != '':
         line = line.strip()
         if line[:1] == "#" or line[:1] == "":
-            line = file.readline()
+            line = file_object.readline()
             continue
         if line.split("=", 1)[0].strip() == "message_lines":
             message_lines = line.split("=", 1)[1].strip()
@@ -439,7 +444,7 @@ def read_settings():
         else:
             bind_line = line.split("=", 1)[0].strip()
             bindings[bind_line] = int(line.split("=", 1)[1].strip())
-        line = file.readline()
+        line = file_object.readline()
 
 
 read_settings()
@@ -555,7 +560,7 @@ def read_perturn():
 #picture is the picture used to show that skill.
 
 #Add a skill to the skill[] array
-def addskill(name, effect, level, price, description, scripting=[],
+def addskill(name, effect, level, price, description, scripting=None,
              picture="items/rage.png"):
     player.skill.append([])
     i = len(player.skill)
@@ -779,6 +784,7 @@ def load_buttons():
 
 icons = {}
 
+
 #This loads the icons
 def load_icons():
     global icons
@@ -888,6 +894,7 @@ def fill_colors():
 
 fill_colors()
 
+
 #given a directory relative to g.mod_directory, will return a dictionary
 #of all images in that directory, and all subdirectories.
 def read_images(dir_name):
@@ -899,7 +906,7 @@ def read_images(dir_name):
     image_dictionary = {"blank": pygame.Surface((32, 32))}
     image_dictionary = inner_read_images(os.path.join(base_location, "modules/default", dir_name),
                                          image_dictionary)
-    image_dictionary = inner_read_images(g.mod_directory + dir_name,
+    image_dictionary = inner_read_images(os.path.join(g.mod_directory, dir_name),
                                          image_dictionary)
 
     return image_dictionary
@@ -907,22 +914,24 @@ def read_images(dir_name):
 
 def inner_read_images(dir_name, image_dictionary):
     i = 0
-    tilename = None
     for root, dirs, files in walk(dir_name):
         (head, tail) = path.split(root)
-        try:
-            if tail != "CVS":
-                for tilename in files:
-                    #if image is in a sub-dir:
-                    if root != dir_name:
-                        i = len(dir_name)
-                        image_dictionary[root[i:] + "/" + tilename] = \
-                            pygame.image.load(root + "/" + tilename).convert_alpha()
-                    else:  #if image is in root dir
-                        image_dictionary[tilename] = \
-                            pygame.image.load(root + "/" + tilename).convert_alpha()
-        except pygame.error:
-            print root[i:] + "/" + tilename + " failed to load"
+        if tail == "CVS":
+            continue
+        for tilename in files:
+            if not tilename.endswith(".png"):
+                continue
+            try:
+                #if image is in a sub-dir:
+                if root != dir_name:
+                    i = len(dir_name)
+                    image_dictionary[root[i:] + "/" + tilename] = \
+                        pygame.image.load(root + "/" + tilename).convert_alpha()
+                else:  # if image is in root dir
+                    image_dictionary[tilename] = \
+                        pygame.image.load(root + "/" + tilename).convert_alpha()
+            except pygame.error:
+                print root[i:] + "/" + tilename + " failed to load"
     return image_dictionary
 
 

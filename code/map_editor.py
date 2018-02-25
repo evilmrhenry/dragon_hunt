@@ -483,27 +483,6 @@ def change_scripting(x, y, modetype):
             cur_map.field[y][x].actions.append(line)
 
 
-#Given xy coords, and the scripting for a tile, each line separated by \n,
-#set the tile data.
-def really_change_scripting(x, y, onload, action):
-    onload_array = onload.split("\n")
-    action_array = action.split("\n")
-    cur_map.field[y][x].onload = []
-    for line in onload_array:
-        if line != "":
-            cur_map.field[y][x].onload.append(line)
-    cur_map.field[y][x].actions = []
-    for line in action_array:
-        if line != "":
-            cur_map.field[y][x].actions.append(line)
-    close_scripting_window()
-
-    scrollleft = float(portal_x) / mapsize_x
-    scrollright = float((portal_x + portalsize)) / mapsize_x
-
-
-# 	x_scroll.set(scrollleft, scrollright)
-
 #this loads the various tiles.
 def load_tiles():
     global tiles

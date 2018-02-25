@@ -21,6 +21,7 @@
 #automatically selects for the player.
 
 #from Tkinter import *
+import os
 import pygame
 
 try:
@@ -47,7 +48,7 @@ pygame.display.set_caption("Loading")
 
 #I can't use the standard image dictionary, as that requires the screen to
 #be created.
-tmp_icon = pygame.image.load("../modules/default/images/buttons/icon.png")
+tmp_icon = pygame.image.load(os.path.join(g.base_location, "modules/default/images/buttons/icon.png"))
 pygame.display.set_icon(tmp_icon)
 
 g.screen_size = (640, 480)
@@ -97,7 +98,7 @@ def sel_mod(selected_mod):
     global prevent_dbl_load
     if prevent_dbl_load == 1: return 0
     prevent_dbl_load = 1
-    g.mod_directory = "../modules/" + selected_mod
+    g.mod_directory = os.path.join(g.base_location, "modules", selected_mod)
 
     g.create_norm_box((g.screen_size[0] / 4,
                        g.screen_size[1] / 3), (g.screen_size[0] / 2,
@@ -370,7 +371,7 @@ def init_window():
 
     #g.window_main.title("Select module")
     pygame.display.set_caption("Select module")
-    g.mod_directory = "../modules/default/"
+    g.mod_directory = os.path.join(g.base_location, "modules", "default")
 
 
     # 	window_sel_game.resizable(0, 0)
