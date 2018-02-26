@@ -69,7 +69,7 @@ map_name = "map.txt"
 tile_set_size = 0
 tilebox_width = 4
 tilegrid = 0  #whether or not to display the map grid
-cur_map = ""  #this will normally be a g.map class.
+cur_map = None  #this will normally be a g.map class.
 global dirnames
 dirnames = []
 #all possible items so we can make unique variables for each one
@@ -752,7 +752,7 @@ def do_load_map():
     global cur_map
     cur_map = g.map("")
     #Rereading all the maps is a bit roundabout, but prevents a nasty bug.
-    g.read_maps(1)
+    g.read_maps(from_editor=True)
     copy_map(cur_map, g.maps[g.zgrid])
     global mapsize_x
     mapsize_x = len(cur_map.field[0])
@@ -1209,7 +1209,7 @@ def sel_mod(selected_mod):
             name = "items/" + item_dir[j]
             item_list[name] = 0
         j += 1
-    g.read_maps(1)
+    g.read_maps(from_editor=True)
     g.load_tiles()
     g.read_variables()
     # 	window.deiconify()

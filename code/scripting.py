@@ -86,7 +86,7 @@ class map:
         self.field[y][x].del_item(itemname)
         g.item.del_dropped_item(itemname, x, y, self.name)
 
-    def __init__(self, mapname, from_editor=0):
+    def __init__(self, mapname, from_editor=False):
         self.name = mapname
         self.field = []  #multidimentional array of tile class members.
         self.monster = []  #monsters that can attack on this level.
@@ -196,13 +196,13 @@ class map:
                     tilemode = 1
                     continue
 
-                if tilemode == 0:  #onload
-                    if from_editor == 1:
+                if tilemode == 0:  # onload
+                    if from_editor:
                         self.tiles[current_tile][0].append(map_line[:-1])
                     else:
                         self.tiles[current_tile][0].append(map_strip)
                 else:  #action
-                    if from_editor == 1:
+                    if from_editor:
                         self.tiles[current_tile][1].append(map_line[:-1])
                     else:
                         self.tiles[current_tile][1].append(map_strip)
@@ -290,8 +290,9 @@ class map:
 #this is the actual array for the maps. Call with g.maps[g.zgrid]
 maps = []
 
+
 #read the data/maps directory and place in maps[]. This called at startup.
-def read_maps(from_editor=0):
+def read_maps(from_editor=False):
     del maps[:]
     g.load_backgrounds()
 

@@ -154,24 +154,24 @@ def refresh_module_info():
 #give the right action. ("etc", "left", "right", "up", "down", "return")
 def key_handler(switch):
     global module_pos
-    if (switch == g.bindings["cancel"]):
+    if switch == g.bindings["cancel"]:
         quit_game()
-    elif (switch == g.bindings["left"] or switch == g.bindings["right"]):
+    elif switch == g.bindings["left"] or switch == g.bindings["right"]:
         global cur_button
         if cur_button == 0:
             cur_button = 1
         else:
             cur_button = 0
         refresh_buttons()
-    elif (switch == g.bindings["up"]):
+    elif switch == g.bindings["up"]:
         module_pos -= 1
         if module_pos <= -1: module_pos = len(array_mods) - 1
         refresh_module_info()
-    elif (switch == g.bindings["down"]):
+    elif switch == g.bindings["down"]:
         module_pos += 1
         if module_pos >= len(array_mods): module_pos = 0
         refresh_module_info()
-    elif (switch == g.bindings["action"]):
+    elif switch == g.bindings["action"]:
         if cur_button != 1:
             sel_list_mod()
         else:
@@ -179,7 +179,7 @@ def key_handler(switch):
 
 
 def mouse_over(xy, x1, y1, x2, y2):
-    if xy[0] >= x1 and xy[0] <= x2 and xy[1] >= y1 and xy[1] <= y2:
+    if x1 <= xy[0] <= x2 and y1 <= xy[1] <= y2:
         return 1
     return 0
 
@@ -303,11 +303,11 @@ def refresh_buttons():
     down_pic = "loadgame_down.png"
     load_pic = "load.png"
     quit_pic = "quit.png"
-    if (cur_button == 0):
+    if cur_button == 0:
         load_pic = "load_sel.png"
-    elif (cur_button == 1):
+    elif cur_button == 1:
         quit_pic = "quit_sel.png"
-    elif (cur_button == 2):
+    elif cur_button == 2:
         up_pic = "loadgame_up_sel.png"
     else:
         down_pic = "loadgame_down_sel.png"
@@ -325,17 +325,11 @@ def refresh_buttons():
 def init_window():
     #	g.window_main.protocol("WM_DELETE_WINDOW", quit_game)
     global array_mods
-    array_mods = listdir("../modules/")
-
-    #remove CVS directory
-    i = 0
-    while i < len(array_mods):
-        if array_mods[i] == "CVS":
-            array_mods.pop(i)
-        elif array_mods[i] == "default":
-            array_mods.pop(i)
-        else:
-            i += 1
+    module_dir = os.path.join(g.base_location, "modules")
+    array_mods = listdir(module_dir)
+    bad_names = {"CVS", "default"}
+    array_mods = [module for module in array_mods
+                  if os.path.isdir(os.path.join(module_dir, module)) and module not in bad_names]
 
     g.screen.fill(g.colors["purple"])
     # 	g.main.canvas_map = Canvas(g.window_main, width=g.tilesize*g.main.mapsizex,
@@ -346,6 +340,9 @@ def init_window():
     g.load_buttons()
 
     #if there is only one module, run it.
+    if len(array_mods) == 1:
+        sel_mod(array_mods[0])
+        return 0
     if len(sys.argv) > 1:
         sys.argv.pop(0)
         for arg in sys.argv:
@@ -363,9 +360,6 @@ def init_window():
                     return 0
                 sel_mod(array_mods[mod_loc])
                 return 0
-    if (len(array_mods) == 1):
-        sel_mod(array_mods[0])
-        return 0
 
     #global window_sel_game
 

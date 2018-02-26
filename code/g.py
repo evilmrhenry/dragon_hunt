@@ -369,6 +369,8 @@ def read_game_name():
 #What dice to roll when starting a new game. 2d array.
 new_game_dice = []
 
+max_mapsize = (0, 0)
+
 global joystick
 joystick = 0
 
@@ -796,12 +798,12 @@ def load_icons():
 
 #given a filename, return the script contained in the file. from_editor will
 #be used for the map editor, to keep it from shredding formatting.
-def read_script_file(file_name, from_editor=0):
+def read_script_file(file_name, from_editor=False):
     temp_array = []
     file = open(g.mod_directory + file_name, 'r')
     temp_array.extend(file.readlines())
     file.close()
-    if from_editor == 0:
+    if not from_editor:
         temp_array = interpret_lines(temp_array)
     return temp_array
 

@@ -22,6 +22,7 @@ import g
 #needed for reading items dir.
 from os import listdir
 
+
 #Item definition.
 class item_class:
     def __init__(self):
@@ -54,8 +55,9 @@ inv = []
 for x in range(28):
     inv.append(-1)
 
+
 #takes the index in the item[] array, and returns the index
-#of the first occurance in the inv[] array, or -1 for failure.
+#of the first occurrence in the inv[] array, or -1 for failure.
 def find_inv_item(num):
     for i in range(len(inv)):
         if inv[i] == num:
@@ -88,6 +90,7 @@ def drop_inv_item(num):
 global item
 item = []
 
+
 #takes an item name, and returns its location in the
 #item[] array, with -1 == nonexisting.
 def finditem(name):
@@ -107,7 +110,7 @@ def read_items():
     i = 0
     while i < len(array_items):
         extension_start = len(array_items[i]) - 4
-        if (extension_start <= 0):
+        if extension_start <= 0:
             array_items.pop(i)
         else:
             if array_items[i][:1] == ".":
@@ -159,29 +162,29 @@ def additem(item_filename):
         #determine the command entered.
         item_command = item_line.split("=", 2)[0]
         item_command = item_command.strip()
-        if (item_command.lower() == "name"):
+        if item_command.lower() == "name":
             item[item_array_loc].name = str(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "type"):
+        elif item_command.lower() == "type":
             item[item_array_loc].type = int(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "quality"):
+        elif item_command.lower() == "quality":
             item[item_array_loc].quality = int(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "price"):
+        elif item_command.lower() == "price":
             item[item_array_loc].price = int(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "value"):
+        elif item_command.lower() == "value":
             item[item_array_loc].value = int(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "description"):
+        elif item_command.lower() == "description":
             item[item_array_loc].description = str(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "picture"):
+        elif item_command.lower() == "picture":
             item[item_array_loc].picturename = str(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "hp_bonus"):
+        elif item_command.lower() == "hp_bonus":
             item[item_array_loc].hp_bonus = int(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "ep_bonus"):
+        elif item_command.lower() == "ep_bonus":
             item[item_array_loc].ep_bonus = int(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "attack_bonus"):
+        elif item_command.lower() == "attack_bonus":
             item[item_array_loc].attack_bonus = int(item_line.split("=", 1)[1])
-        elif (item_command.lower() == "defense_bonus"):
+        elif item_command.lower() == "defense_bonus":
             item[item_array_loc].defense_bonus = int(item_line.split("=", 1)[1])
-        elif (item_command.lower() == ":scripting"):
+        elif item_command.lower() == ":scripting":
             cur_line += 1
             while cur_line < len(item_file):
                 item_line = item_file[cur_line]
@@ -191,9 +194,9 @@ def additem(item_filename):
                 item[item_array_loc].scripting.append(item_line)
                 cur_line += 1
         cur_line += 1
-    if (item[item_array_loc].value == -1):
+    if item[item_array_loc].value == -1:
         item[item_array_loc].value = item[item_array_loc].price
-    if (item[item_array_loc].price == -1):
+    if item[item_array_loc].price == -1:
         item[item_array_loc].price = item[item_array_loc].value
 
 
