@@ -787,6 +787,11 @@ def load_buttons():
 icons = {}
 
 
+def get_selected_name(name):
+    """Will turn example.png to example_sel.png"""
+    return name[:-4]+"_sel"+name[-4:]
+
+
 #This loads the icons
 def load_icons():
     global icons
