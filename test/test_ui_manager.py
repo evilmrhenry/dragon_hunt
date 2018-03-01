@@ -22,7 +22,7 @@ import mock
 import unittest
 import pygame
 
-pygame.init()
+pygame.init()  # This is because g.py does some pygame stuff on import; remove it once that's refactored out.
 pygame.font.init()
 
 import ui_manager

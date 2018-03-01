@@ -23,6 +23,7 @@
 #from Tkinter import *
 import os
 import pygame
+import sys
 
 try:
     import psyco
@@ -41,7 +42,7 @@ from os import listdir
 #unused_window = Tk()
 #unused_window.withdraw()
 import g
-import sys
+import ui_manager
 
 
 pygame.display.set_caption("Loading")
@@ -80,11 +81,12 @@ array_mods = []
 global module_pos
 module_pos = 0
 
-global cur_button
-cur_button = 0
-
 global prevent_dbl_load
 prevent_dbl_load = 0
+
+global mouse_xy
+mouse_xy = [0, 0]
+
 
 #take the selected module, and send to sel_mod
 def sel_list_mod():
@@ -104,11 +106,6 @@ def sel_mod(selected_mod):
                        g.screen_size[1] / 3), (g.screen_size[0] / 2,
                                                g.screen_size[1] / 3),
                       "black", "light_gray")
-
-    # 	g.main.canvas_map.create_rectangle(g.tilesize*g.main.mapsizex/4,
-    # 		g.tilesize*g.main.mapsizey/3, g.tilesize*g.main.mapsizex*3/4,
-    # 		g.tilesize*g.main.mapsizey/3+140+g.buttons["load.png"].get_height(),
-    # 		fill="#e3e3e3", tags="loadgame")
 
     g.print_string(g.screen, "Loading. Please wait", g.font,
                    (g.screen_size[0] / 2, g.screen_size[1] / 2), align=1)
@@ -148,34 +145,24 @@ def refresh_module_info():
                                                     g.buttons["loadgame_down.png"].get_height() + 3 + i * 20))
 
 
-# 		g.main.canvas_map.itemconfigure("load_module"+str(i), text=savetext)
-
 #All keypresses pass through here. Based on the key name,
 #give the right action. ("etc", "left", "right", "up", "down", "return")
 def key_handler(switch):
     global module_pos
     if switch == g.bindings["cancel"]:
         quit_game()
-    elif switch == g.bindings["left"] or switch == g.bindings["right"]:
-        global cur_button
-        if cur_button == 0:
-            cur_button = 1
-        else:
-            cur_button = 0
-        refresh_buttons()
     elif switch == g.bindings["up"]:
         module_pos -= 1
-        if module_pos <= -1: module_pos = len(array_mods) - 1
+        if module_pos <= -1:
+            module_pos = len(array_mods) - 1
         refresh_module_info()
     elif switch == g.bindings["down"]:
         module_pos += 1
-        if module_pos >= len(array_mods): module_pos = 0
+        if module_pos >= len(array_mods):
+            module_pos = 0
         refresh_module_info()
     elif switch == g.bindings["action"]:
-        if cur_button != 1:
-            sel_list_mod()
-        else:
-            quit_game()
+        sel_list_mod()
 
 
 def mouse_over(xy, x1, y1, x2, y2):
@@ -185,48 +172,17 @@ def mouse_over(xy, x1, y1, x2, y2):
 
 
 def mouse_handler_move(xy):
-    global cur_button
-    #up arrow:
-    if mouse_over(xy, g.tilesize * g.main.mapsizex / 4,
-                  g.tilesize * g.main.mapsizey / 3,
-                  g.tilesize * g.main.mapsizex / 4 + g.buttons["loadgame_up.png"].get_width(),
-                  g.tilesize * g.main.mapsizey / 3 + g.buttons["loadgame_up.png"].get_height()):
-        cur_button = 2
-
-    #down arrow:
-    if mouse_over(xy, g.tilesize * g.main.mapsizex / 4,
-                  g.tilesize * g.main.mapsizey / 3 + 140 - g.buttons["loadgame_down.png"].get_height(),
-                  g.tilesize * g.main.mapsizex / 4 + g.buttons["loadgame_down.png"].get_width(),
-                  g.tilesize * g.main.mapsizey / 3 + 140):
-        cur_button = 3
-
-    #load button:
-    if mouse_over(xy, g.tilesize * g.main.mapsizex / 4,
-                  g.tilesize * g.main.mapsizey / 3 + 140,
-                  g.tilesize * g.main.mapsizex / 4 + g.buttons["load.png"].get_width(),
-                  g.tilesize * g.main.mapsizey / 3 + 140 + g.buttons["load.png"].get_height()):
-        cur_button = 0
-
-    #leave button:
-    if mouse_over(xy,
-                  g.tilesize * g.main.mapsizex / 4 + g.buttons["load.png"].get_width(),
-                  g.tilesize * g.main.mapsizey / 3 + 140,
-                  g.tilesize * g.main.mapsizex / 4 + g.buttons["load.png"].get_width() +
-                          g.buttons["quit.png"].get_width(),
-                  g.tilesize * g.main.mapsizey / 3 + 140 + g.buttons["quit.png"].get_height()):
-        cur_button = 1
-    refresh_buttons()
+    global mouse_xy
+    mouse_xy = xy
+    refresh_buttons(*xy)
+    refresh_module_info()
 
 
 def mouse_handler_down(xy):
-    global cur_button
     global module_pos
-    #up arrow:
-    # 	if mouse_over(xy, g.tilesize*g.main.mapsizex/4,
-    # 		g.tilesize*g.main.mapsizey/3,
-    # 		g.tilesize*g.main.mapsizex/4+g.buttons["loadgame_up.png"].get_width(),
-    # 		g.tilesize*g.main.mapsizey/3+g.buttons["loadgame_up.png"].get_height()):
-    if cur_button == 2:
+    tag = button_manager.click_handler(*xy)
+    print tag
+    if tag == "up":
         tmp = module_pos - (module_pos % 5) - 5
         if tmp < 0:
             module_pos = len(array_mods) - (len(array_mods) % 5) + (module_pos % 5)
@@ -236,12 +192,7 @@ def mouse_handler_down(xy):
             module_pos -= 5
         refresh_module_info()
 
-    #down arrow:
-    # 	if mouse_over(xy, g.tilesize*g.main.mapsizex/4,
-    # 		g.tilesize*g.main.mapsizey/3+140-g.buttons["loadgame_down.png"].get_height(),
-    # 		g.tilesize*g.main.mapsizex/4+g.buttons["loadgame_down.png"].get_width(),
-    # 		g.tilesize*g.main.mapsizey/3+140):
-    if cur_button == 3:
+    if tag == "down":
         tmp = module_pos - (module_pos % 5) + 5
         if tmp >= len(array_mods):
             module_pos = (module_pos % 5)
@@ -251,21 +202,11 @@ def mouse_handler_down(xy):
                 module_pos = len(array_mods) - 1
         refresh_module_info()
 
-    #load button:
-    if mouse_over(xy, g.tilesize * g.main.mapsizex / 4,
-                  g.tilesize * g.main.mapsizey / 3 + 140,
-                  g.tilesize * g.main.mapsizex / 4 + g.buttons["load.png"].get_width(),
-                  g.tilesize * g.main.mapsizey / 3 + 140 + g.buttons["load.png"].get_height()):
-        key_handler(pygame.K_RETURN)
+    if tag == "load":
+        sel_list_mod()
 
-    #leave button:
-    if mouse_over(xy,
-                  g.tilesize * g.main.mapsizex / 4 + g.buttons["load.png"].get_width(),
-                  g.tilesize * g.main.mapsizey / 3 + 140,
-                  g.tilesize * g.main.mapsizex / 4 + g.buttons["load.png"].get_width() +
-                          g.buttons["quit.png"].get_width(),
-                  g.tilesize * g.main.mapsizey / 3 + 140 + g.buttons["quit.png"].get_height()):
-        key_handler(pygame.K_RETURN)
+    if tag == "quit":
+        quit_game()
 
     #save "listbox"
     if mouse_over(xy,
@@ -277,7 +218,8 @@ def mouse_handler_down(xy):
         base_y = (xy[1] -
                   g.tilesize * g.main.mapsizey / 3 + g.buttons["loadgame_up.png"].get_height())
         base_y -= 40
-        if base_y % 20 < 2 or base_y % 20 > 18: return
+        if base_y % 20 < 2 or base_y % 20 > 18:
+            return
         tmp = module_pos - (module_pos % 5) + (base_y / 20)
         if tmp >= len(array_mods):
             return
@@ -286,45 +228,14 @@ def mouse_handler_down(xy):
         refresh_module_info()
 
 
-def mouse_handler_double(xy):
-    global module_pos
-    #save "listbox"
-    if mouse_over(xy,
-                  g.tilesize * g.main.mapsizex / 4,
-                  g.tilesize * g.main.mapsizey / 3 + g.buttons["loadgame_up.png"].get_height(),
-                  g.tilesize * g.main.mapsizex / 4 + g.buttons["loadgame_up.png"].get_width(),
-                  g.tilesize * g.main.mapsizey / 3 + 140 - g.buttons["loadgame_down.png"].get_height()):
-        sel_list_mod()
-
-
-def refresh_buttons():
+def refresh_buttons(x, y):
+    button_manager.draw_handler(x, y)
     g.unclean_screen = True
-    up_pic = "loadgame_up.png"
-    down_pic = "loadgame_down.png"
-    load_pic = "load.png"
-    quit_pic = "quit.png"
-    if cur_button == 0:
-        load_pic = "load_sel.png"
-    elif cur_button == 1:
-        quit_pic = "quit_sel.png"
-    elif cur_button == 2:
-        up_pic = "loadgame_up_sel.png"
-    else:
-        down_pic = "loadgame_down_sel.png"
-    g.screen.blit(g.buttons[up_pic], (g.tilesize * g.main.mapsizex / 4,
-                                      g.tilesize * g.main.mapsizey / 3))
-    g.screen.blit(g.buttons[down_pic], (g.tilesize * g.main.mapsizex / 4,
-                                        g.tilesize * g.main.mapsizey / 3 + 140 - g.buttons[
-                                            "loadgame_down.png"].get_height()))
-    g.screen.blit(g.buttons[load_pic], (g.tilesize * g.main.mapsizex / 4,
-                                        g.tilesize * g.main.mapsizey / 3 + 140))
-    g.screen.blit(g.buttons[quit_pic], (g.tilesize * g.main.mapsizex / 4 +
-                                        g.buttons["load.png"].get_width(), g.tilesize * g.main.mapsizey / 3 + 140))
 
 
 def init_window():
-    #	g.window_main.protocol("WM_DELETE_WINDOW", quit_game)
     global array_mods
+    global button_manager
     module_dir = os.path.join(g.base_location, "modules")
     array_mods = listdir(module_dir)
     bad_names = {"CVS", "default"}
@@ -332,11 +243,6 @@ def init_window():
                   if os.path.isdir(os.path.join(module_dir, module)) and module not in bad_names]
 
     g.screen.fill(g.colors["purple"])
-    # 	g.main.canvas_map = Canvas(g.window_main, width=g.tilesize*g.main.mapsizex,
-    # 		height=g.tilesize*g.main.mapsizey, highlightthickness=0,
-    # 		background="#606090")
-    # 	g.main.canvas_map.grid(column=0, row=0)
-
     g.load_buttons()
 
     #if there is only one module, run it.
@@ -361,41 +267,35 @@ def init_window():
                 sel_mod(array_mods[mod_loc])
                 return 0
 
-    #global window_sel_game
-
-    #g.window_main.title("Select module")
     pygame.display.set_caption("Select module")
     g.mod_directory = os.path.join(g.base_location, "modules", "default")
 
+    button_manager = ui_manager.UIManager(g.screen)
 
-    # 	window_sel_game.resizable(0, 0)
-    # 	window_sel_game.maxsize(900, 900)
-    # 	window_sel_game.wm_geometry("+%d+%d" % (20, 20))
+    background = ui_manager.UIBox(0, 0, g.screen.get_width(), g.screen.get_height(), outline_color="purple")
+    black_bar = ui_manager.UIBox(0, g.tilesize * g.main.mapsizey / 2, g.tilesize * g.main.mapsizex, 30, "black")
+    pick_one = ui_manager.UIText(g.tilesize * g.main.mapsizex / 2 + 10, g.tilesize * g.main.mapsizey / 2 + 15,
+                                 "You have multiple modules installed. Pick one to play.", color="white")
+    listbox_container = ui_manager.UIBox(g.tilesize * g.main.mapsizex / 4 - 2, g.tilesize * g.main.mapsizey / 3 - 2,
+                                         g.buttons["loadgame_up.png"].get_width() + 4,
+                                         140 + g.buttons["load.png"].get_height() + 4,
+                                         outline_color="black", inner_color="light_gray")
 
-    #black bar
-    g.create_norm_box((0, g.tilesize * g.main.mapsizey / 2),
-                      (g.tilesize * g.main.mapsizex, 30), inner_color="black")
-    # 	g.main.canvas_map.create_rectangle(0,
-    # 		g.tilesize*g.main.mapsizey/2,
-    # 		g.tilesize*g.main.mapsizex,
-    # 		g.tilesize*g.main.mapsizey/2+30,
-    # 		fill="#000000", tags="loadgame")
-    g.print_string(g.screen,
-                   "You have multiple modules installed. Pick one to play.", g.font,
-                   (g.tilesize * g.main.mapsizex / 2 + 10, g.tilesize * g.main.mapsizey / 2 + 15),
-                   color=g.colors["white"])
-    # 	g.main.canvas_map.create_text(g.tilesize*g.main.mapsizex/2,
-    # 		g.tilesize*g.main.mapsizey/2+15,
-    # 		text="You have multiple modules installed. Pick one to play.",
-    # 		anchor=W, tags=("module"), fill="#FFFFFF")
+    up_button = ui_manager.UIButton(g.tilesize * g.main.mapsizex / 4, g.tilesize * g.main.mapsizey / 3,
+                                    "loadgame_up.png", tag="up")
+    down_button = ui_manager.UIButton(g.tilesize * g.main.mapsizex / 4,
+                                      g.tilesize * g.main.mapsizey / 3 + 140 - g.buttons["loadgame_down.png"].get_height(),
+                                      "loadgame_down.png", tag="down")
+    load_button = ui_manager.UIButton(g.tilesize * g.main.mapsizex / 4, g.tilesize * g.main.mapsizey / 3 + 140,
+                                      "load.png", tag="load")
+    quit_button = ui_manager.UIButton(g.tilesize * g.main.mapsizex / 4 + g.buttons["load.png"].get_width(),
+                                      g.tilesize * g.main.mapsizey / 3 + 140, "quit.png", tag="quit")
 
-    #box for listbox
-    g.create_norm_box((g.tilesize * g.main.mapsizex / 4 - 2,
-                       g.tilesize * g.main.mapsizey / 3 - 2), (g.buttons["loadgame_up.png"].get_width() + 4,
-                                                               140 + g.buttons["load.png"].get_height() + 4))
+    button_manager.extend_elements([background, black_bar, pick_one, listbox_container, up_button, down_button,
+                                    load_button, quit_button])
 
+    refresh_buttons(*mouse_xy)
     refresh_module_info()
-    refresh_buttons()
     while 1:
         pygame.time.wait(30)
         g.clock.tick(30)
@@ -413,18 +313,12 @@ def init_window():
                 mouse_handler_move(event.pos)
                 mouse_handler_down(event.pos)
         tmpjoy = g.run_joystick()
-        if tmpjoy != 0:
-            if tmpjoy != g.bindings["left"] and tmpjoy != g.bindings["right"]:
-                global cur_button
-                if cur_button != 0:
-                    cur_button = 0
-                    refresh_buttons()
-                key_handler(tmpjoy)
+        if tmpjoy:
+            key_handler(tmpjoy)
 
         if g.unclean_screen:
             g.unclean_screen = False
             pygame.display.flip()
 
-# 	g.window_main.mainloop()
 
 init_window()

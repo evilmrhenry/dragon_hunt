@@ -37,9 +37,12 @@ class UIElement(object):
         """Returns True if the x/y given is over the element"""
         return self.x < x < self.x + self.width and self.y < y < self.y + self.height
 
+    def click(self, x, y):
+        return self.clickable and self.tag and self.over(x, y)
+
     def draw(self, screen, x, y):
         if self.image:
-            screen.blit(self.image, self.x, self.y)
+            screen.blit(self.image, (self.x, self.y))
 
 
 class UIImage(UIElement):
@@ -65,20 +68,29 @@ class UIBox(UIElement):
 
 class UIButton(UIElement):
     """Represents a button. Be sure to use a tag on this, so you can do something on click."""
-    def __init__(self, x, y, image_unselected, image_selected=None, tag=None):
+    def __init__(self, x, y, image_unselected, image_selected=None, tag=None, callback=None):
         if image_selected is None:
             image_selected = g.get_selected_name(image_unselected)
         self.image_unselected = g.buttons[image_unselected]
         self.image_selected = g.buttons[image_selected]
         super(UIButton, self).__init__(x, y, self.image_selected.get_width(), self.image_selected.get_height(), tag)
         self.clickable = True
+        self.callback = callback
+
+    def click(self, x, y):
+        if self.over(x, y):
+            if self.callback:
+                self.callback()
+            else:
+                return True
+        return False
 
     def draw(self, screen, x, y):
         """x/y should be the mouse location"""
         if self.over(x, y):
-            screen.blit(self.image_selected)
+            screen.blit(self.image_selected, (self.x, self.y))
         else:
-            screen.blit(self.image_unselected)
+            screen.blit(self.image_unselected, (self.x, self.y))
 
 
 class UIText(UIElement):
@@ -146,7 +158,7 @@ class UIManager(object):
         """Will return the tag of the element clicked on, or None if nothing interesting was clicked on."""
         for i in range(len(self._element_list)-1, -1, -1):
             element = self._element_list[i]
-            if element.clickable and element.tag and element.over(x, y):
+            if element.click(x, y):
                 return element.tag
         return None
 
