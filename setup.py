@@ -15,5 +15,5 @@ setup(console=["dragon_hunt.py"],
       author_email="evilmrhenry@emhsoft.net",
       url="http://www.emhsoft.net/dh.html",
       license="GPL",
-      py_modules=[], requires=['mock']
+      py_modules=[], requires=['mock', 'pygame']
 )
